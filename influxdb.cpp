@@ -61,14 +61,19 @@ int		sent = 0;
 		struct timeval tv;
 		(*it)->getUserTimestamp(&tv);
 		chrono::time_point<chrono::system_clock> timestamp;
-		timestamp = chrono::system_clock::time_point{chrono::seconds{tv.tv_sec} + chrono::microseconds{tv.tv_usec}};
+		timestamp = chrono::system_clock::time_point{chrono::seconds{tv.tv_sec} + chrono::milliseconds{tv.tv_usec / 1000}};
 		point.setTimestamp(timestamp);
 		vector<Datapoint *> datapoints = (*it)->getReadingData();
 		for (auto dit = datapoints.cbegin(); dit != datapoints.cend();
 					++dit)
 		{
 			string name = (*dit)->getName();
-			point.addField(name.c_str(), (*dit)->getData().toString().c_str());
+			if ((*dit)->getData().getType() == DatapointValue::dataTagType::T_INTEGER)
+				point.addField(name.c_str(), (int)((*dit)->getData().toInt()));
+			else if ((*dit)->getData().getType() == DatapointValue::dataTagType::T_FLOAT)
+				point.addField(name.c_str(), (*dit)->getData().toDouble());
+			else
+				point.addField(name.c_str(), (*dit)->getData().toString().c_str());
 		}
 		m_influxdb->write(forward<Point&&>(point));
 		sent++;
