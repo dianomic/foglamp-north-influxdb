@@ -22,9 +22,7 @@
 git clone https://github.com/awegrzyn/influxdb-cxx.git
 cd influxdb-cxx; mkdir build
 cd build
-cmake ..
-sudo make install
-sed -i ../CMakeLists.txt -e 's/add_library(InfluxDB SHARED/add_library(InfluxDB STATIC/'
+sed -i ../CMakeLists.txt -e 's/"Build shared versions of libraries" ON/"Build shared versions of libraries" OFF/'
 cmake ..
 make -i
 sudo cp lib/libInfluxDB.a /usr/local/lib
