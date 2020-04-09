@@ -22,6 +22,12 @@
 git clone https://github.com/awegrzyn/influxdb-cxx.git
 cd influxdb-cxx; mkdir build
 cd build
+echo Build and install Dynamic Client library - required for header files
+cmake ..
+make
+sudo make install
+echo Build and install static client library
+rm -rf *
 sed -i ../CMakeLists.txt -e 's/"Build shared versions of libraries" ON/"Build shared versions of libraries" OFF/'
 cmake ..
 make -i InfluxDB
