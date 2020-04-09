@@ -24,5 +24,5 @@ cd influxdb-cxx; mkdir build
 cd build
 sed -i ../CMakeLists.txt -e 's/"Build shared versions of libraries" ON/"Build shared versions of libraries" OFF/'
 cmake ..
-make -i
+make -i InfluxDB
 sudo cp lib/libInfluxDB.a /usr/local/lib
