@@ -50,7 +50,7 @@ int		sent = 0;
 		} catch (exception &e) {
 			Logger::getLogger()->fatal("Failed to connecto to influxdb: %s", e.what());
 		}
-		Logger::getLogger()->warn("Connected to %s", getURL().c_str());
+		Logger::getLogger()->info("Connected to %s", getURL().c_str());
 		m_influxdb->batchOf(100);
 	}
 	for (auto it = readings.cbegin(); it != readings.cend(); ++it)
