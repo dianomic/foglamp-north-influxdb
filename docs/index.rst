@@ -41,4 +41,4 @@ The process of creating a North InfluxDB is similar to any other north setup
 
   - Click *Next*
 
-  - Enable your delivery task and click on *Done*
+  - Enable your north task and click on *Done*
