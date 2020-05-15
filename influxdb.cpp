@@ -50,7 +50,7 @@ int		sent = 0;
 		} catch (exception &e) {
 			Logger::getLogger()->fatal("Failed to connecto to influxdb: %s", e.what());
 		}
-		Logger::getLogger()->warn("Connected to %s", getURL().c_str());
+		Logger::getLogger()->info("Connected to %s", getURL().c_str());
 		m_influxdb->batchOf(100);
 	}
 	for (auto it = readings.cbegin(); it != readings.cend(); ++it)
@@ -98,7 +98,7 @@ string InfluxDBPlugin::getURL()
 	rval += "/?db=";
 	rval += m_db;
 
-	Logger::getLogger()->error("db is %s, URL %s", m_db.c_str(), rval.c_str());
+	Logger::getLogger()->info("db is %s, URL %s", m_db.c_str(), rval.c_str());
 
 	return rval;
 		
