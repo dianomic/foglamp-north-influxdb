@@ -152,7 +152,7 @@ PLUGIN_HANDLE plugin_init(ConfigCategory* configData)
 	}
 	catch (const std::exception &e)
 	{
-		Logger::getLogger()->error("%s - Error handling parameters %s", __FUNCTION__ , e.what());
+		Logger::getLogger()->error("Error handling parameters %s", e.what());
 	}
 
 

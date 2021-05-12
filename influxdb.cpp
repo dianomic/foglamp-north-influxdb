@@ -42,7 +42,7 @@ int	sent = 0;
 			try {
 				if ((m_influxdb = influxdb::InfluxDBFactory::Get(getURL())) == NULL)
 				{
-					Logger::getLogger()->fatal("Unable to connecto to influxDB server");
+					Logger::getLogger()->fatal("Unable to connect to influxDB server");
 					return 0;
 				}
 				m_connected = true;
@@ -92,7 +92,7 @@ int	sent = 0;
 		// the write operation raises an error only at the end of the block defined with batchOf
 		sent = 0;
 
-		Logger::getLogger()->error("xxx %s - Error while sending data %s", __FUNCTION__ , e.what());
+		Logger::getLogger()->error("Error while sending data %s" , e.what());
 	}
 
 	return sent;
