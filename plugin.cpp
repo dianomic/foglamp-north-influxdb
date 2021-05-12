@@ -119,32 +119,42 @@ PLUGIN_INFORMATION *plugin_info()
  */
 PLUGIN_HANDLE plugin_init(ConfigCategory* configData)
 {
-	InfluxDBPlugin *influxdb = new InfluxDBPlugin();
+	InfluxDBPlugin *influxdb;
 
-	if (!configData->itemExists("host"))
+	try
 	{
-		Logger::getLogger()->fatal("Influxdb plugin must have a host defined for the Influxdb");
-		throw exception();
+		influxdb = new InfluxDBPlugin();
+
+		if (!configData->itemExists("host"))
+		{
+			Logger::getLogger()->fatal("Influxdb plugin must have a host defined for the Influxdb");
+			throw exception();
+		}
+		influxdb->setHost(configData->getValue("host"));
+		if (!configData->itemExists("port"))
+		{
+			Logger::getLogger()->fatal("Influxdb plugin must have a port defined");
+			throw exception();
+		}
+		influxdb->setPort(configData->getValue("port"));
+		if (configData->itemExists("database"))
+		{
+			influxdb->setDB(configData->getValue("database"));
+		}
+		if (configData->itemExists("username"))
+		{
+			influxdb->setUsername(configData->getValue("username"));
+		}
+		if (configData->itemExists("password"))
+		{
+			influxdb->setPassword(configData->getValue("password"));
+		}
 	}
-	influxdb->setHost(configData->getValue("host"));
-	if (!configData->itemExists("port"))
+	catch (const std::exception &e)
 	{
-		Logger::getLogger()->fatal("Influxdb plugin must have a port defined");
-		throw exception();
+		Logger::getLogger()->error("Error handling parameters %s", e.what());
 	}
-	influxdb->setPort(configData->getValue("port"));
-	if (configData->itemExists("database"))
-	{
-		influxdb->setDB(configData->getValue("database"));
-	}
-	if (configData->itemExists("username"))
-	{
-		influxdb->setUsername(configData->getValue("username"));
-	}
-	if (configData->itemExists("password"))
-	{
-		influxdb->setPassword(configData->getValue("password"));
-	}
+
 
 	return (PLUGIN_HANDLE)influxdb;
 }
@@ -156,8 +166,10 @@ uint32_t plugin_send(const PLUGIN_HANDLE handle,
 		     const vector<Reading *>& readings)
 {
 InfluxDBPlugin	*influxdb = (InfluxDBPlugin *)handle;
+	int sent;
 
-	return influxdb->send(readings);
+	sent = influxdb->send(readings);
+	return sent;
 }
 
 /**
