@@ -75,11 +75,20 @@ int	sent = 0;
 			{
 				string name = (*dit)->getName();
 				if ((*dit)->getData().getType() == DatapointValue::dataTagType::T_INTEGER)
-					point.addField(name.c_str(), (int)((*dit)->getData().toInt()));
+				{
+					// sending data as integers generates some errors
+					//point.addField(name.c_str(), (int)((*dit)->getData().toInt()));
+					point.addField(name.c_str(), (double)((*dit)->getData().toInt()));
+				}
 				else if ((*dit)->getData().getType() == DatapointValue::dataTagType::T_FLOAT)
+				{
 					point.addField(name.c_str(), (*dit)->getData().toDouble());
+				}
 				else
+				{
 					point.addField(name.c_str(), (*dit)->getData().toString().c_str());
+				}
+
 			}
 			m_influxdb->write(forward<Point&&>(point));
 			sent++;
